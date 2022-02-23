@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'dart:math' as math;
 import 'dart:convert';
 
 void main() {
@@ -55,6 +57,7 @@ class BitcoinTracker extends StatefulWidget {
 
 class _BitcoinTrackerState extends State<BitcoinTracker> {
   late Future<int> bitcoinPrice;
+  double tarkovPrice = 0.0;
   @override
   void initState() {
     super.initState();
@@ -82,18 +85,32 @@ class _BitcoinTrackerState extends State<BitcoinTracker> {
               ),
               borderRadius: BorderRadius.circular(5),
             ),
-            child: FutureBuilder<int>(
-                future: bitcoinPrice,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    int currentBitcoinPrice =
-                        int.parse(snapshot.data.toString());
-                    return Text(currentBitcoinPrice.toString());
-                  } else if (snapshot.hasError) {
-                    return const Text('Error getting bitcoin price');
-                  }
-                  return const CircularProgressIndicator();
-                }),
+            child: Column(
+              children: [
+                TextField(
+                  decoration: const InputDecoration(
+                      labelText: 'How much bitcoin did you spend on Tarkov?'),
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  onChanged: (text) {
+                    tarkovPrice = double.parse(text);
+                  },
+                ),
+                FutureBuilder<int>(
+                    future: bitcoinPrice,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        int currentBitcoinPrice =
+                            int.parse(snapshot.data.toString());
+                        double priceSpent = currentBitcoinPrice * tarkovPrice;
+                        return Text(tarkovPrice.toString());
+                      } else if (snapshot.hasError) {
+                        return const Text('Error getting bitcoin price');
+                      }
+                      return const CircularProgressIndicator();
+                    }),
+              ],
+            ),
           ),
         ),
       ),
