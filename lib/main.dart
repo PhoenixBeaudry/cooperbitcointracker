@@ -123,6 +123,17 @@ class _BitcoinTrackerState extends State<BitcoinTracker> {
                     return const CircularProgressIndicator();
                   }),
             ),
+            Container(
+              height: 340.0,
+              width: 340.0,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/bitcoinsad.jpeg'),
+                  fit: BoxFit.fill,
+                ),
+                shape: BoxShape.circle,
+              ),
+            ),
           ]),
         ),
       ),
