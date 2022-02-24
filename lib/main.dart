@@ -128,7 +128,7 @@ class _BitcoinTrackerState extends State<BitcoinTracker> {
               width: 340.0,
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('bitcoinsad.jpeg'),
+                  image: AssetImage('assets/bitcoinsad.jpeg'),
                   fit: BoxFit.fill,
                 ),
                 shape: BoxShape.circle,
