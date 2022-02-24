@@ -57,12 +57,16 @@ class BitcoinTracker extends StatefulWidget {
 
 class _BitcoinTrackerState extends State<BitcoinTracker> {
   late Future<int> bitcoinPrice;
-  TextEditingController tarkovController = TextEditingController();
+  late TextEditingController tarkovController;
   double tarkovPrice = 0.0;
 
   @override
   void initState() {
     super.initState();
+    tarkovController = TextEditingController(text: '0.0')
+      ..addListener(() {
+        setState(() {});
+      });
     bitcoinPrice = fetchBitcoinPrice();
   }
 
@@ -103,10 +107,16 @@ class _BitcoinTrackerState extends State<BitcoinTracker> {
                     if (snapshot.hasData) {
                       int currentBitcoinPrice =
                           int.parse(snapshot.data.toString());
-                      double priceOfTarkov =
-                          double.parse(tarkovController.text);
+                      double priceOfTarkov = 0.0;
+                      try {
+                        priceOfTarkov = double.parse(tarkovController.text);
+                      } catch (e) {}
+
                       return Text(
-                          (currentBitcoinPrice * priceOfTarkov).toString());
+                          "Cooper spent: \$" +
+                              (currentBitcoinPrice * priceOfTarkov).toString() +
+                              " on Escape from Tarkov!",
+                          style: TextStyle(fontSize: 32));
                     } else if (snapshot.hasError) {
                       return const Text('Error getting bitcoin price');
                     }
