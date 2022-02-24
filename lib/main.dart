@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         // application has a blue toolbar. Then, without quitting the app, try
         // changing the primarySwatch below to Colors.green and then invoke
         // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
+        // o r simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primarySwatch: Colors.blue,
@@ -57,7 +57,9 @@ class BitcoinTracker extends StatefulWidget {
 
 class _BitcoinTrackerState extends State<BitcoinTracker> {
   late Future<int> bitcoinPrice;
+  TextEditingController tarkovController = TextEditingController();
   double tarkovPrice = 0.0;
+
   @override
   void initState() {
     super.initState();
@@ -76,42 +78,42 @@ class _BitcoinTrackerState extends State<BitcoinTracker> {
           title: const Text('Cooper Bitcoin Tracker'),
         ),
         body: Center(
-          child: Container(
-            padding: const EdgeInsets.all(15.0),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.black,
-                width: 4,
+          child: Column(children: [
+            Container(
+              child: TextField(
+                controller: tarkovController,
+                decoration: const InputDecoration(
+                    labelText: 'How much bitcoin did you spend on Tarkov?'),
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
               ),
-              borderRadius: BorderRadius.circular(5),
             ),
-            child: Column(
-              children: [
-                TextField(
-                  decoration: const InputDecoration(
-                      labelText: 'How much bitcoin did you spend on Tarkov?'),
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  onChanged: (text) {
-                    tarkovPrice = double.parse(text);
-                  },
+            Container(
+              padding: const EdgeInsets.all(15.0),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black,
+                  width: 4,
                 ),
-                FutureBuilder<int>(
-                    future: bitcoinPrice,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        int currentBitcoinPrice =
-                            int.parse(snapshot.data.toString());
-                        double priceSpent = currentBitcoinPrice * tarkovPrice;
-                        return Text(tarkovPrice.toString());
-                      } else if (snapshot.hasError) {
-                        return const Text('Error getting bitcoin price');
-                      }
-                      return const CircularProgressIndicator();
-                    }),
-              ],
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: FutureBuilder<int>(
+                  future: bitcoinPrice,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      int currentBitcoinPrice =
+                          int.parse(snapshot.data.toString());
+                      double priceOfTarkov =
+                          double.parse(tarkovController.text);
+                      return Text(
+                          (currentBitcoinPrice * priceOfTarkov).toString());
+                    } else if (snapshot.hasError) {
+                      return const Text('Error getting bitcoin price');
+                    }
+                    return const CircularProgressIndicator();
+                  }),
             ),
-          ),
+          ]),
         ),
       ),
     );
