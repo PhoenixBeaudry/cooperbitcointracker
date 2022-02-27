@@ -83,15 +83,29 @@ class _BitcoinTrackerState extends State<BitcoinTracker> {
         ),
         body: Center(
           child: Column(children: [
+            const SizedBox(height: 10),
             Container(
+              width: 385,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black,
+                  width: 4,
+                ),
+                borderRadius: BorderRadius.circular(5),
+              ),
               child: TextField(
                 controller: tarkovController,
+                style: const TextStyle(
+                  fontSize: 25.0,
+                ),
                 decoration: const InputDecoration(
                     labelText: 'How much bitcoin did you spend on Tarkov?'),
+                textAlign: TextAlign.center,
                 keyboardType:
                     const TextInputType.numberWithOptions(decimal: true),
               ),
             ),
+            const SizedBox(height: 10), // For vertical Spacing
             Container(
               padding: const EdgeInsets.all(15.0),
               decoration: BoxDecoration(
